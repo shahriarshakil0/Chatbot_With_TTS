@@ -2,7 +2,15 @@
 ```
 python3 -m venv venv
 ```
-
-* pip instsll -r requirements.txt
-* python3 train.py
-* python3 bot.py
+## Install dependency
+```
+pip instsll -r requirements.txt
+```
+## Train model
+```
+python3 train.py
+```
+## Talk to bot
+```
+python3 bot.py
+```
