@@ -8,7 +8,7 @@ source venv/bin/activate
 ```
 ## Install dependency
 ```
-pip instsll -r requirements.txt
+pip install -r requirements.txt
 ```
 ## Train model
 ```
