@@ -4,6 +4,11 @@ import torch
 from model import NeuralNet
 from nltk_utils import bag_of_words, tokenize
 from tts import tts
+from nlu import intent_nlu
+from weather import weather
+from gpt import single_response
+import nltk
+nltk.download('punkt')
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -29,6 +34,8 @@ print("Let's chat! (type 'quit' to exit)")
 while True:
     # sentence = "do you use credit cards?"
     sentence = input("You: ")
+    intent = intent_nlu(sentence)
+    gpt_model = single_response(sentence)
     if sentence == "quit":
         break
 
@@ -48,9 +55,19 @@ while True:
         for intent in intents['data']:
             if tag == intent["tag"]:
                 reply = random.choice(intent['responses'])
-                print(f"{bot_name}: {random.choice(intent['responses'])}")
+                print(f"{bot_name}: {reply}")
                 tts(reply)
+
+    elif intent == 'weather':
+        city = input(f"{bot_name}: In what location do you want to check?\nYou: ")
+        temperature = round(weather(city)['main']['temp']-273.15)
+        desc = weather(city)['weather'][0]['description']
+        hum = weather(city)['main']['humidity']
+        wind_spd = weather(city)['wind']['speed']
+        print(f"{bot_name}: The current temperature at {city} is {temperature} degree Celsius. Weather is {desc}. The humidity is {hum}% and wind speed is {wind_spd}kph")
+        reply = f"The current temperature at {city} is {temperature} degree Celsius. Weather is {desc}. The humidity is {hum}% and wind speed is {wind_spd}kph"
+        tts(reply)
     else:
-        print(f"{bot_name}: Sorry, i can't understand.")
-        reply = "Sorry, i can't understand."
+        reply = gpt_model
+        print(f"{bot_name}: {reply}")
         tts(reply)

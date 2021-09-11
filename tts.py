@@ -6,8 +6,8 @@ language = 'en'
 # text = input("Enter your text :")
 def tts(text):
     tts = gTTS(text,lang=language,slow=False)
-    tts.save('/home/shakil/chatbot-alpha/Output/speech.wav')
-    playsound('/home/shakil/chatbot-alpha/Output/speech.wav')
+    tts.save('./Output/speech.wav')
+    playsound('./Output/speech.wav')
 
     return playsound
 
